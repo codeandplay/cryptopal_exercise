@@ -13,6 +13,43 @@ public class SingleByteXorCipher {
         this.getEngTxFreq();
     }
 
+    public String mostFrequentHex(){
+       return this.engFreq.entrySet().iterator().next().getKey();
+    }
+
+    public static String getMostFrequent(String hexString){
+
+        Map<String, Integer> hexStringFreq = SingleByteXorCipher.buildHexCharFrequency(hexString);
+
+        return hexStringFreq.entrySet().iterator().next().getKey();
+    }
+
+    public static int getMostFrequentNum(String hexString){
+
+        Map<String, Integer> hexStringFreq = SingleByteXorCipher.buildHexCharFrequency(hexString);
+
+        return hexStringFreq.entrySet().iterator().next().getValue();
+    }
+
+    public static String hexStringToAsciiString(String hexString){
+        StringBuilder ascii = new StringBuilder();
+        for(int i =0; i < hexString.length(); i+=2){
+           ascii.append((char) Integer.parseInt(hexString.substring(i, i + 1) + hexString.substring(i+1, i+ 2), 16));
+        }
+
+        return ascii.toString();
+    }
+
+    public String decryptedString() {
+        String hexString = "";
+        try {
+            hexString = this.decryptedHexString();
+        }catch(Exception e){
+           e.printStackTrace();
+        }
+       return SingleByteXorCipher.hexStringToAsciiString(hexString);
+    }
+
     public String decryptedHexString() throws Exception {
 
         Map<String, Integer> encryptedFreq = SingleByteXorCipher.buildHexCharFrequency(this.hexString);
@@ -34,11 +71,12 @@ public class SingleByteXorCipher {
            StringBuilder decrypteString = new StringBuilder();
 
            // decrypted the whole hexString
-            for(int j = 0; j < this.hexString.length(); j+=2 ){
+            for(int j = 0; j < this.hexString.length(); j+= 2 ){
                 String decryptedHex = FixedXOr.fixedXOr((this.hexString.substring(j, j+1) + this.hexString.substring(j+1, j+2)), hexCipher);
-                decrypteString.append((char) Integer.parseInt(decryptedHex, 16));
+//                decrypteString.append((char) Integer.parseInt(decryptedHex, 16));
+                decrypteString.append(decryptedHex);
             }
-            System.out.println(decrypteString);
+//            System.out.println(decrypteString);
 
             if(i == 0){
                 mostLikly = decrypteString.toString();

@@ -350,7 +350,13 @@ public class Base64 {
         StringBuilder hexString = new StringBuilder();
 
         for ( byte b : byteArr) {
-            hexString.append(Integer.toHexString(b));
+            String thisHexStr = Integer.toHexString(b);
+
+            if(thisHexStr.length() == 1){
+               thisHexStr = '0' + thisHexStr;
+            }
+
+            hexString.append(thisHexStr);
         }
 
         return hexString.toString();
